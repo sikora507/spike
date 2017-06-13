@@ -3,7 +3,16 @@
         <canvas v-bind:style="styleObject"></canvas>
     </div>
 </template>
-<script>
+<script lang="ts">
+import Vue, { ComponentOptions } from 'vue'
+interface Display extends Vue{
+    width: Number,
+    height: Number,
+    buffer: any,
+    reverse: Boolean,
+    ctx: any,
+    draw() : void
+}
 const defaultHeight = 300;
 export default {
     props: {
@@ -56,7 +65,7 @@ export default {
         this.ctx.fillRect(30, 30, 50, 50);
         window.requestAnimationFrame(this.draw)
     }
-}
+} as ComponentOptions<Display>
 </script>
 <style scoped>
 canvas {

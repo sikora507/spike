@@ -30,7 +30,7 @@
 </template>
 <script>
 import Display from './Display.vue'
-import SpikingNeuron from './SpikingNeuron'
+import SpikingNeuronSimple from './SpikingNeuronSimple'
 import BufferQueue from './BufferQueue'
 
 export default {
@@ -39,7 +39,7 @@ export default {
             inputBuffer: new BufferQueue(310),
             neuronBuffer: new BufferQueue(310),
             outputBuffer: new BufferQueue(310),
-            neuron: new SpikingNeuron(this.spikeCallback),
+            neuron: new SpikingNeuronSimple(this.spikeCallback),
             interval: null
         }
     },
