@@ -15,6 +15,7 @@
                     <v-layout row wrap>
                         <v-flex xs4>
                             <Display :buffer="inputBuffer"></Display>
+                            <TestComponent></TestComponent>
                         </v-flex>
                         <v-flex xs4>
                             <Display :buffer="neuronBuffer"></Display>
@@ -30,6 +31,7 @@
 </template>
 <script>
 import Display from './Display.vue'
+import TestComponent from './TestComponent.vue'
 import SpikingNeuronSimple from './SpikingNeuronSimple'
 import BufferQueue from './BufferQueue'
 
@@ -65,7 +67,8 @@ export default {
         clearInterval(this.interval);
     },
     components: {
-        Display
+        Display,
+        TestComponent
     }
 }
 </script>
