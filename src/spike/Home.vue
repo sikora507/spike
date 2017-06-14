@@ -14,14 +14,13 @@
                 <v-card-text>
                     <v-layout row wrap>
                         <v-flex xs4>
-                            <Display :buffer="inputBuffer"></Display>
-                            <TestComponent></TestComponent>
+                            <Display v-bind:buffer="inputBuffer"></Display>
                         </v-flex>
                         <v-flex xs4>
-                            <Display :buffer="neuronBuffer"></Display>
+                            <Display v-bind:buffer="neuronBuffer"></Display>
                         </v-flex>
                         <v-flex xs4>
-                            <Display :buffer="outputBuffer" :reverse="true"></Display>
+                            <Display v-bind:buffer="outputBuffer" :reverse="true"></Display>
                         </v-flex>
                     </v-layout>
                 </v-card-text>
@@ -31,7 +30,6 @@
 </template>
 <script>
 import Display from './Display.vue'
-import TestComponent from './TestComponent.vue'
 import SpikingNeuronSimple from './SpikingNeuronSimple'
 import BufferQueue from './BufferQueue'
 
@@ -67,8 +65,7 @@ export default {
         clearInterval(this.interval);
     },
     components: {
-        Display,
-        TestComponent
+        Display
     }
 }
 </script>
