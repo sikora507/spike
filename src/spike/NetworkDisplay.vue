@@ -22,10 +22,10 @@ export default class NetworkDisplay extends Vue {
     network: SimpleFixedNetwork
     networkForGUI: NetworkForGUI
     requestId: any;
-    
+
     constructor() {
         super();
-        this.networkForGUI = new NetworkForGUI(this.network);    
+        this.networkForGUI = new NetworkForGUI(this.network);
     }
     mounted() {
         let canvas = this.$el.getElementsByTagName('canvas')[0];
@@ -100,12 +100,12 @@ export default class NetworkDisplay extends Vue {
         this.drawNeurons();
         this.requestId = window.requestAnimationFrame(this.redrawNetwork);
     }
-    beforeDestroy(){
+    beforeDestroy() {
         this.requestId = undefined;
     }
-    redrawNetwork(){
+    redrawNetwork() {
         if (this.ctx == null) { return; }
-        if(!this.requestId){ return; }
+        if (!this.requestId) { return; }
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         this.drawSynapses();
         this.drawNeurons();
@@ -138,18 +138,26 @@ export default class NetworkDisplay extends Vue {
     }
     drawSynapses() {
         if (this.ctx == null) { return; }
-        this.ctx.beginPath();
-        this.ctx.lineWidth = 1;
-        this.ctx.strokeStyle = '#111111';
         for (let neuron of this.networkForGUI.neurons) {
             for (let synapse of neuron.outputSynapses) {
+                this.ctx.beginPath();
                 this.ctx.moveTo(neuron.x, neuron.y);
+                this.ctx.lineWidth = synapse.outputSignalStrength >= 0
+                    ? synapse.outputSignalStrength / synapse.outputSignalMax
+                    : synapse.outputSignalStrength / synapse.outputSignalMin;
+                if(synapse.outputSignalStrength == 0){
+                    this.ctx.lineWidth = 0.000001;
+                }
+                this.ctx.lineWidth *= 5; // 5px max
+                this.ctx.strokeStyle = synapse.outputSignalStrength >= 0
+                    ? '#0000FF'
+                    : '#FF0000';
                 var outputNeuron = synapse.outputNeuron as NeuronWithCoordinates;
                 this.ctx.lineTo(outputNeuron.x, outputNeuron.y)
+                this.ctx.stroke();
+                this.ctx.closePath();
             }
         }
-        this.ctx.stroke();
-        this.ctx.closePath();
     }
 }
 </script>

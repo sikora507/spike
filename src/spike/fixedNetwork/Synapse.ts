@@ -18,6 +18,9 @@ export default class Synapse {
     // output signal strength will be changed by hebbian plasticity rules
     outputSignalStrength: number = 100;
 
+    outputSignalMax:number = 200;
+    outputSignalMin:number = -100;
+
     constructor(outputNeuron: SpikingNeuron) {
         this.outputNeuron = outputNeuron;
     }
@@ -32,8 +35,18 @@ export default class Synapse {
         while (this.spikeTrain.length > 0 && this.spikeTrain[this.spikeTrain.length - 1] >= 1) {
             this.spikeTrain.pop();
             if (this.outputNeuron) {
-                this.outputNeuron.ApplySignal(this.outputSignalStrength);
+                this.outputNeuron.ApplyFromSynapse(this);
             }
+        }
+    }
+    IncrementOutputSignal(){
+        if(this.outputSignalStrength < this.outputSignalMax){
+            this.outputSignalStrength++;
+        }
+    }
+    DecrementOutputSignal(){
+        if(this.outputSignalStrength > this.outputSignalMin){
+            this.outputSignalStrength--;
         }
     }
 }
