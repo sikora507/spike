@@ -17,12 +17,14 @@ const defaultHeight = 300;
         reverse: Boolean,
     }
 })
-export default class Display extends Vue {
+export default class LineChartDisplay extends Vue {
 
     width: Number
     height: Number
     buffer: any
     reverse: Boolean
+
+    requestId: any;
 
     styleObject = {
         height: this.height ? this.height : defaultHeight + 'px'
@@ -30,6 +32,9 @@ export default class Display extends Vue {
     ctx: any = null
 
     draw(timestamp: Number) {
+        if(!this.requestId){
+            return;
+        }
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         if (this.buffer != null) {
             this.ctx.beginPath();
@@ -47,7 +52,7 @@ export default class Display extends Vue {
             this.buffer.next();
             this.ctx.stroke();
         }
-        window.requestAnimationFrame(this.draw)
+        this.requestId = window.requestAnimationFrame(this.draw)
     }
     mounted() {
         let canvas = this.$el.getElementsByTagName('canvas')[0];
@@ -61,7 +66,10 @@ export default class Display extends Vue {
 
         this.ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
         this.ctx.fillRect(30, 30, 50, 50);
-        window.requestAnimationFrame(this.draw)
+        this.requestId = window.requestAnimationFrame(this.draw)
+    }
+    beforeDestroy(){
+        this.requestId = undefined;
     }
 }
 </script>

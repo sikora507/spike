@@ -14,13 +14,13 @@
                 <v-card-text>
                     <v-layout row wrap>
                         <v-flex xs4>
-                            <Display v-bind:buffer="inputBuffer"></Display>
+                            <LineChartDisplay v-bind:buffer="inputBuffer"></LineChartDisplay>
                         </v-flex>
                         <v-flex xs4>
-                            <Display v-bind:buffer="neuronBuffer"></Display>
+                            <LineChartDisplay v-bind:buffer="neuronBuffer"></LineChartDisplay>
                         </v-flex>
                         <v-flex xs4>
-                            <Display v-bind:buffer="outputBuffer" :reverse="true"></Display>
+                            <LineChartDisplay v-bind:buffer="outputBuffer" :reverse="true"></LineChartDisplay>
                         </v-flex>
                     </v-layout>
                 </v-card-text>
@@ -29,7 +29,7 @@
     </v-layout>
 </template>
 <script>
-import Display from './Display.vue'
+import LineChartDisplay from './LineChartDisplay.vue'
 import SpikingNeuronSimple from './SpikingNeuronSimple'
 import BufferQueue from './BufferQueue'
 
@@ -65,7 +65,7 @@ export default {
         clearInterval(this.interval);
     },
     components: {
-        Display
+        LineChartDisplay
     }
 }
 </script>

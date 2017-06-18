@@ -1,7 +1,11 @@
 <template>
   <v-app>
     <v-toolbar light>
-      <v-toolbar-title>Spiking neuron</v-toolbar-title>
+      <v-toolbar-title>Spiking networks</v-toolbar-title>
+      <v-toolbar-items>
+        <v-toolbar-item href="/singleNeuron" router>Single neuron</v-toolbar-item>
+        <v-toolbar-item  href="/fixedNetwork" router>Fixed network</v-toolbar-item>
+      </v-toolbar-items>
     </v-toolbar>
     <main>
       <v-container fluid>
@@ -17,13 +21,13 @@ export default {
   data() {
     return {
       clipped: false,
-      drawer: true,
+      drawer: false,
       fixed: false,
       items: [
         { icon: 'bubble_chart', title: 'Inspire' }
       ],
       miniVariant: false,
-      right: true,
+      right: false,
       rightDrawer: false,
       title: 'Vuetify.js'
     }
