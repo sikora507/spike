@@ -1,5 +1,9 @@
 export default class BufferQueue{
-    constructor(length){
+    private pointer: number = 0;
+    private buffer: Array<any> = [];
+    private length: number;
+
+    constructor(length: number){
         this.pointer = 0;
         this.buffer =[];
         for (var i = 0; i < length; i++) {
@@ -7,7 +11,7 @@ export default class BufferQueue{
         }
         this.length = length;
     }
-    get(key){
+    get(key: any){
         if (key < 0){
             return this.buffer[this.pointer+key];
         } else if (key === false){
@@ -16,7 +20,7 @@ export default class BufferQueue{
             return this.buffer[key];
         }
     }
-    push(item){
+    push(item: any){
       this.buffer[this.pointer] = item;
       this.pointer = (this.pointer + 1) % this.length;
       return item;

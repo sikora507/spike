@@ -7,8 +7,6 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import SimpleFixedNetwork from './fixedNetwork/SimpleFixedNetwork'
-import NetworkForGUI from './fixedNetwork/GUI/NetworkForGUI'
-import NeuronWithCoordinates from './fixedNetwork/GUI/NeuronWithCoordinates'
 
 @Component({
     props: {
@@ -17,16 +15,11 @@ import NeuronWithCoordinates from './fixedNetwork/GUI/NeuronWithCoordinates'
     }
 })
 export default class NetworkDisplay extends Vue {
-    height: number
-    ctx: CanvasRenderingContext2D | null
-    network: SimpleFixedNetwork
-    networkForGUI: NetworkForGUI
+    height: number;
+    ctx: CanvasRenderingContext2D | null;
+    network: SimpleFixedNetwork;
     requestId: any;
 
-    constructor() {
-        super();
-        this.networkForGUI = new NetworkForGUI(this.network);
-    }
     mounted() {
         let canvas = this.$el.getElementsByTagName('canvas')[0];
         this.ctx = canvas.getContext('2d');
@@ -45,56 +38,56 @@ export default class NetworkDisplay extends Vue {
         this.ctx.lineWidth = 2;
         this.ctx.strokeStyle = '#003300';
         // draw input neurons
-        this.networkForGUI.neurons[0].x = startX;
-        this.networkForGUI.neurons[0].y = startY;
+        this.network.inputNeuron1.x = startX;
+        this.network.inputNeuron1.y = startY;
         startY += stepY;
-        this.networkForGUI.neurons[1].x = startX;
-        this.networkForGUI.neurons[1].y = startY;
+        this.network.inputNeuron2.x = startX;
+        this.network.inputNeuron2.y = startY;
         startY += stepY;
-        this.networkForGUI.neurons[2].x = startX;
-        this.networkForGUI.neurons[2].y = startY;
+        this.network.inputNeuron3.x = startX;
+        this.network.inputNeuron3.y = startY;
 
         startX += stepX; // move to next column: hidden layer nr. 1
         stepY = canvas.height / 4; // 4 neurons in hidden layer
         startY = stepY / 2;
 
-        this.networkForGUI.neurons[3].x = startX;
-        this.networkForGUI.neurons[3].y = startY;
+        this.network.hiddenNeuron1.x = startX;
+        this.network.hiddenNeuron1.y = startY;
         startY += stepY;
-        this.networkForGUI.neurons[4].x = startX;
-        this.networkForGUI.neurons[4].y = startY;
+        this.network.hiddenNeuron2.x = startX;
+        this.network.hiddenNeuron2.y = startY;
         startY += stepY;
-        this.networkForGUI.neurons[5].x = startX;
-        this.networkForGUI.neurons[5].y = startY;
+        this.network.hiddenNeuron3.x = startX;
+        this.network.hiddenNeuron3.y = startY;
         startY += stepY;
-        this.networkForGUI.neurons[6].x = startX;
-        this.networkForGUI.neurons[6].y = startY;
+        this.network.hiddenNeuron4.x = startX;
+        this.network.hiddenNeuron4.y = startY;
 
         startX += stepX; // move to next column: hidden layer nr. 2
         stepY = canvas.height / 4; // 4 neurons in hidden layer 2
         startY = stepY / 2;
 
-        this.networkForGUI.neurons[7].x = startX;
-        this.networkForGUI.neurons[7].y = startY;
+        this.network.hiddenNeuron5.x = startX;
+        this.network.hiddenNeuron5.y = startY;
         startY += stepY;
-        this.networkForGUI.neurons[8].x = startX;
-        this.networkForGUI.neurons[8].y = startY;
+        this.network.hiddenNeuron6.x = startX;
+        this.network.hiddenNeuron6.y = startY;
         startY += stepY;
-        this.networkForGUI.neurons[9].x = startX;
-        this.networkForGUI.neurons[9].y = startY;
+        this.network.hiddenNeuron7.x = startX;
+        this.network.hiddenNeuron7.y = startY;
         startY += stepY;
-        this.networkForGUI.neurons[10].x = startX;
-        this.networkForGUI.neurons[10].y = startY;
+        this.network.hiddenNeuron8.x = startX;
+        this.network.hiddenNeuron8.y = startY;
 
         startX += stepX; // move to next column: output layer
         stepY = canvas.height / 2; // 2 neurons in output layer
         startY = stepY / 2;
 
-        this.networkForGUI.neurons[11].x = startX;
-        this.networkForGUI.neurons[11].y = startY;
+        this.network.outputNeuron1.x = startX;
+        this.network.outputNeuron1.y = startY;
         startY += stepY;
-        this.networkForGUI.neurons[12].x = startX;
-        this.networkForGUI.neurons[12].y = startY;
+        this.network.outputNeuron2.x = startX;
+        this.network.outputNeuron2.y = startY;
 
         this.drawSynapses();
         this.drawNeurons();
@@ -123,7 +116,7 @@ export default class NetworkDisplay extends Vue {
     drawNeurons() {
         if (this.ctx == null) { return; }
         this.ctx.lineWidth = 2;
-        for (let neuron of this.networkForGUI.neurons) {
+        for (let neuron of this.network.neurons) {
             if (neuron.membranePotential >= 0) {
                 let blue = 255 - neuron.membranePotential * 255 / neuron.threshold;
                 blue = Math.trunc(blue);
@@ -138,7 +131,7 @@ export default class NetworkDisplay extends Vue {
     }
     drawSynapses() {
         if (this.ctx == null) { return; }
-        for (let neuron of this.networkForGUI.neurons) {
+        for (let neuron of this.network.neurons) {
             for (let synapse of neuron.outputSynapses) {
                 this.ctx.beginPath();
                 this.ctx.moveTo(neuron.x, neuron.y);
@@ -152,7 +145,7 @@ export default class NetworkDisplay extends Vue {
                 this.ctx.strokeStyle = synapse.outputSignalStrength >= 0
                     ? '#0000FF'
                     : '#FF0000';
-                var outputNeuron = synapse.outputNeuron as NeuronWithCoordinates;
+                var outputNeuron = synapse.outputNeuron;
                 this.ctx.lineTo(outputNeuron.x, outputNeuron.y)
                 this.ctx.stroke();
                 this.ctx.closePath();
